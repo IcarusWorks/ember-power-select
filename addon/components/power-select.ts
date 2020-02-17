@@ -3,7 +3,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action, get } from '@ember/object';
 import { addObserver, removeObserver } from '@ember/object/observers';
-import { scheduleOnce } from '@ember/runloop';
+import { later, scheduleOnce } from '@ember/runloop';
 import { isEqual } from '@ember/utils';
 import { assert } from '@ember/debug';
 import {
@@ -17,9 +17,6 @@ import {
   defaultTypeAheadMatcher,
   MatcherFn
 } from '../utils/group-utils';
-import { restartableTask } from 'ember-concurrency-decorators';
-// @ts-ignore
-import { timeout } from 'ember-concurrency';
 import { Dropdown, DropdownActions } from 'ember-basic-dropdown/addon/components/basic-dropdown'
 
 interface SelectActions extends DropdownActions {
@@ -257,7 +254,7 @@ export default class PowerSelect extends Component<PowerSelectArgs> {
       return;
     }
     if ((e.keyCode >= 48 && e.keyCode <= 90) || isNumpadKeyEvent(e)) { // Keys 0-9, a-z or numpad keys
-      (this.triggerTypingTask as unknown as Performable).perform(e);
+      this.triggerTypingTask(e);
     } else if (e.keyCode === 32) {  // Space
       this._handleKeySpace(this.storedAPI, e);
     } else {
@@ -538,9 +535,7 @@ export default class PowerSelect extends Component<PowerSelectArgs> {
     return findOptionWithOffset(options || [], term, typeAheadOptionMatcher, offset, skipDisabled);
   }
 
-  // Tasks
-  @restartableTask
-  *triggerTypingTask(this: PowerSelect, e: KeyboardEvent) {
+  triggerTypingTask(this: PowerSelect, e: KeyboardEvent) {
     // In general, a user doing this interaction means to have a different result.
     let searchStartOffset = 1;
     let repeatingChar = this._repeatingChar;
@@ -589,7 +584,7 @@ export default class PowerSelect extends Component<PowerSelectArgs> {
         this.storedAPI.actions.select(match, e);
       }
     }
-    yield timeout(1000);
+    later(this, () => {}, 1000);
     this._expirableSearchText = '';
     this._repeatingChar = '';
   }
