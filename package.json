@@ -10,10 +10,6 @@
     "dropdown",
     "ember-power"
   ],
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/cibernox/ember-power-select.git"
-  },
   "license": "MIT",
   "author": {
     "name": "Miguel Camba",
