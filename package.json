@@ -1,6 +1,6 @@
 {
-  "name": "ember-power-select",
-  "version": "4.0.0-beta.6",
+  "name": "@icarusworks/ember-power-select",
+  "version": "4.0.0-beta.7",
   "description": "The extensible select component built for ember",
   "keywords": [
     "ember-addon",
@@ -14,6 +14,13 @@
   "author": {
     "name": "Miguel Camba",
     "email": "miguel.camba@gmail.com"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/IcarusWorks/ember-power-select.git"
   },
   "directories": {
     "doc": "doc",

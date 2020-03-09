@@ -47,9 +47,6 @@ interface CancellablePromise<T> extends Promise<T> {
 interface Arrayable<T> {
   toArray(): T[];
 }
-interface Performable {
-  perform: (...args: any[]) => void
-}
 // Some args are not listed here because they are only accessed from the template. Should I list them?
 export interface PowerSelectArgs {
   highlightOnHover?: boolean
